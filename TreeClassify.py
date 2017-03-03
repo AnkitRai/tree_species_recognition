@@ -42,7 +42,6 @@ trainData,testData = trainData/255 , testData/255
 
 # Building the Model
 unique_val = set(y)
-
 print len(unique_val)
 
 ### importing the required packages
@@ -58,9 +57,7 @@ from keras.utils import np_utils
 from keras.callbacks import ModelCheckpoint
 
 num_classes = 184
-
 trainData = np.ndarray(shape=(799,3,800,600),dtype=np.float32)
-
 testData = np.ndarray(shape=(200,3,800,600),dtype=np.float32)
 
 from keras.optimizers import SGD
@@ -90,9 +87,7 @@ callbacks_list = [checkpoint]
 #build the CNN model
 model = base_model()
 
-
-## Load the best ckeckpoints - 
-
+# Load the best ckeckpoints - 
 model.load_weights("weights-improvement-03--0.19.hdf5")
 
 
@@ -102,12 +97,8 @@ history = model.fit(trainData,trainLabel, validation_data=(testData,testLabel),c
 
 print model.summary()
 
-
 #Final scores
 scores = model.evaluate(testData,testLabel,verbose=0)
-
-
-# In[73]:
 
 #Save the model
 model.save_weights("CNN_PlantClassify.h5")
