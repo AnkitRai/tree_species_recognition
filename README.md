@@ -1,4 +1,4 @@
-# PlantClassify_DeepLearning
+# Identifying tree species using deep learning
 Recognizing tree species using convolutional neural network
  The project aims at classifying tree species using (leaf RGB images) convolutional neural network with different architecture.
  
