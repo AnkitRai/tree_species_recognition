@@ -49,6 +49,7 @@ class_mapping = {label:idx for idx,label in
 
 dataframe['label'] = dataframe['label'].map(class_mapping)
 
+# wrtiting data to a file
 dataframe.to_csv('/home/rai5/Downloads/data.csv')
 
 
