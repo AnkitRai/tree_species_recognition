@@ -7,4 +7,4 @@ Recognizing tree species using convolutional neural network
 
 Since, the model is trained on ~10K images, we could achieve ~ 73% accuracy.
 
-P.S. Next, would train using Tensorflow API.
+
