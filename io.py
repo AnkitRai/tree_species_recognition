@@ -1,4 +1,4 @@
-
+#!usr/bin/python
 #creating training and test data
 import glob
 import os
@@ -8,8 +8,8 @@ import pandas as pd
 
 from convnet import config
 
-
 path = config.INPUT_DATA # '/dataset/images/field/'
+
 
 def load_data(path):
 
