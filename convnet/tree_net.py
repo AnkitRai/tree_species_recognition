@@ -17,7 +17,7 @@ class ConvolutionNet:
 	def build(name, *args, **kargs):
 		# define the network (i.e., string => function) mappings
 		mappings = {
-			"net": ConvolutionNet.NeuralNet}
+			"net": ConvolutionNet.ConvNet}
 
 		# grab the builder function from the mappings dictionary
 		builder = mappings.get(name, None)

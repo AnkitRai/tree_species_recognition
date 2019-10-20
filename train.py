@@ -7,7 +7,6 @@ import pandas as pd
 from matplotlib import pyplot as plt
 from sklearn.cross_validation import train_test_split
 
-from __future__ import print_function
 from keras.optimizers import SGD
 from keras.datasets import cifar10
 from keras.utils import np_utils
@@ -21,7 +20,7 @@ np.random.seed(seed=seed)
 # load the training and testing data, then scale it into the range [0, 1]
 print("[INFO] loading training and validation data...")
 
-data = pd.read_csv(config.TRAIN_DATA)
+data = pd.read_csv('leafsnap_data.csv')
 
 print("The number of images: {} and label: {}".format(data.shape[0], data.shape[1]))
 
@@ -60,7 +59,7 @@ kargs = {"dropout": 0.25, "activation": "softmax"}
 
 # train the model using SGD
 print("[INFO] compiling model...")
-model = ConvolutionNet.build(args["network"], 3, 32, 32, 10, **kargs)
+model = ConvolutionNet.build("net", 3, 32, 32, 10, **kargs)
 sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
 model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
 
@@ -83,8 +82,8 @@ print("[INFO] accuracy: {:.2f}%".format(accuracy * 100))
 
 # dump the network architecture and weights to file
 print("[INFO] dumping architecture and weights to file...")
-model.save_weights(config.MODEL_WEIGHTS)
-#model.save_weights("CNN_PlantClassify.h5")
+#model.save_weights(config.MODEL_WEIGHTS)
+model.save_weights("CNN_PlantClassify.h5")
 
 ## Plotting and evaluating model history -
 print(history.history.keys())

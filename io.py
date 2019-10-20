@@ -9,7 +9,7 @@ import pandas as pd
 from convnet import config
 
 
-path = config.INPUT_DATA # '/dataset/images/field/'
+path = '/Users/ankitrai/Downloads/leafsnap-dataset/dataset/images/field/'
 
 def load_data(path):
 
@@ -45,6 +45,10 @@ def load_data(path):
 
     print('[INFO]: Writing data to csv..')
 
-    dataframe.to_csv(config.OUTPUT_PATH)
+    dataframe.to_csv('leafsnap_data.csv')
 
     return None
+
+if __name__ == '__main__':
+    load_data(path)
+
