@@ -48,8 +48,3 @@ def load_data(path):
     dataframe.to_csv(config.OUTPUT_PATH)
 
     return None
-
-
-
-
-
