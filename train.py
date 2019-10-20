@@ -12,7 +12,7 @@ from keras.datasets import cifar10
 from keras.utils import np_utils
 
 from convnet import config
-from convnet import ConvolutionNet
+from convnet.tree_net import ConvolutionNet
 
 seed =42
 np.random.seed(seed=seed)
@@ -47,8 +47,8 @@ trainData,testData = np.asarray(X_train), np.asarray(X_test)
 trainLabel,testLabel = np.asarray(Y_train) , np.asarray(Y_test)
 
 print('[INFO]: Normalize images between 0 to 1..')
-trainData = trainData.astype("float") / 255.0
-testData = testData.astype("float") / 255.0
+trainData = trainData/255
+testData = testData/255
 
 num_classes = 184
 trainData = np.ndarray(shape=(799,3,800,600),dtype=np.float32)

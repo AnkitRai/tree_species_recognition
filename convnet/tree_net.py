@@ -7,7 +7,7 @@ from keras.layers.core import Dropout
 from keras.layers.convolutional import Conv2D
 from keras import backend as K
 
-import config
+from convnet import config
 
 class ConvolutionNet:
 	def __init__(self):
