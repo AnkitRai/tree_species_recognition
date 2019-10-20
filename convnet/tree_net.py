@@ -1,6 +1,4 @@
 #!usr/bin/python
-#importing packages
-
 from keras.models import Sequential
 from keras.layers.core import Activation
 from keras.layers.core import Flatten
