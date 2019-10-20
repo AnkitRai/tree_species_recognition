@@ -107,12 +107,3 @@ plt.legend(['training','validation'], loc='lower right')
 plt.xlabel('Epoch')
 plt.ylabel('model loss')
 plt.savefig('model_loss.png') 
-
-
-
-
-
-
-
-
-
