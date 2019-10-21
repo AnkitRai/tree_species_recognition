@@ -7,5 +7,5 @@ The project aims at classifying tree species using (leaf RGB images) convolution
 
 Dependencies:
 
-tensorflow=1.14.0
-keras==2.2.0
+*`tensorflow=1.14.0`
+*`keras==2.2.0`
