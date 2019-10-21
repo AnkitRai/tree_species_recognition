@@ -1,73 +1,41 @@
 #!usr/bin/python
+import sys
+from matplotlib import pyplot
 from keras.models import Sequential
-from keras.layers.core import Activation
-from keras.layers.core import Flatten
-from keras.layers.core import Dense
-from keras.layers.core import Dropout
-from keras.layers.convolutional import Conv2D
+from keras.layers import Conv2D
+from keras.layers import MaxPooling2D
+from keras.layers import Dense
+from keras.layers import Flatten
+from keras.layers import Dropout
+from keras.optimizers import SGD
+from keras.preprocessing.image import ImageDataGenerator
 from keras import backend as K
 
 from convnet import config
 
-class ConvolutionNet:
-	def __init__(self):
-		pass
+# define the model
+def shallow_net():
+	model = Sequential()
+	model.add(Conv2D(32, (3, 3), activation='relu'
+		, kernel_initializer='he_uniform'
+		, padding='same'
+		, input_shape=(config.imgRows, config.imgCols, config.numChannels)))
+	model.add(MaxPooling2D((2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Conv2D(64, (3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
+	model.add(MaxPooling2D((2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Conv2D(128, (3, 3), activation='relu', kernel_initializer='he_uniform', padding='same'))
+	model.add(MaxPooling2D((2, 2)))
+	model.add(Dropout(0.2))
+	model.add(Flatten())
+	model.add(Dense(128, activation='relu', kernel_initializer='he_uniform'))
+	model.add(Dropout(0.5))
+	model.add(Dense(1, activation='sigmoid'))
+	
+	# compile model
+	opt = SGD(lr=config.learning_rate, momentum=config.momentum)
+	model.compile(optimizer=opt, loss='binary_crossentropy', metrics=['accuracy'])
+	
+	return model
 
-	@staticmethod
-	def build(name, *args, **kargs):
-		# define the network (i.e., string => function) mappings
-		mappings = {
-			"net": ConvolutionNet.ConvNet}
-
-		# grab the builder function from the mappings dictionary
-		builder = mappings.get(name, None)
-
-		# if the builder is None, then return None
-		if builder is None:
-			return None
-
-		# otherwise, build the network architecture
-		return builder(*args, **kargs)
-
-	@staticmethod
-	def ConvNet():
-		# initialize the model
-		model = Sequential()
-
-		# define the layes
-		model.add(Convolution2D(32, 3, 3, border_mode="same",
-			input_shape=(config.numChannels, config.imgRows, config.imgCols)))
-		model.add(Activation("relu"))
-		model.add(Convolution2D(32, 3, 3))
-		model.add(Activation("relu"))
-		model.add(MaxPooling2D(pool_size=(2, 2)))
-
-		# check to see if dropout should be applied to reduce overfitting
-		if config.dropout:
-			model.add(Dropout(0.25))
-
-		model.add(Convolution2D(64, 3, 3, border_mode="same"))
-		model.add(Activation("relu"))
-		model.add(Convolution2D(64, 3, 3))
-		model.add(Activation("relu"))
-		model.add(MaxPooling2D(pool_size=(2, 2)))
-
-		# check to see if dropout should be applied to reduce overfitting
-		if config.dropout:
-			model.add(Dropout(0.25))
-
-		# define the set of FC => RELU layers
-		model.add(Flatten())
-		model.add(Dense(512))
-		model.add(Activation("relu"))
-
-		# check to see if dropout should be applied to reduce overfitting
-		if config.dropout:
-			model.add(Dropout(0.5))
-
-		# define the soft-max classifier
-		model.add(Dense(numClasses))
-		model.add(Activation("softmax"))
-
-		# return the model base architecture
-		return model

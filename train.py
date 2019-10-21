@@ -10,9 +10,13 @@ from sklearn.cross_validation import train_test_split
 from keras.optimizers import SGD
 from keras.datasets import cifar10
 from keras.utils import np_utils
+from keras.callbacks import ModelCheckpoint
+
+import helpers as hlp
 
 from convnet import config
-from convnet.tree_net import ConvolutionNet
+#from convnet.tree_net import ConvolutionNet
+from convnet.tree_net import shallow_net
 
 seed =42
 np.random.seed(seed=seed)
@@ -20,7 +24,7 @@ np.random.seed(seed=seed)
 # load the training and testing data, then scale it into the range [0, 1]
 print("[INFO] loading training and validation data...")
 
-data = pd.read_csv('leafsnap_data.csv')
+data = pd.read_csv('sample_data.csv')
 
 print("The number of images: {} and label: {}".format(data.shape[0], data.shape[1]))
 
@@ -51,17 +55,18 @@ trainData = trainData/255
 testData = testData/255
 
 num_classes = 184
-trainData = np.ndarray(shape=(799,3,800,600),dtype=np.float32)
-testData = np.ndarray(shape=(200,3,800,600),dtype=np.float32)
+trainData = np.ndarray(shape=(80,800,600,3),dtype=np.float32)
+testData = np.ndarray(shape=(20,800,600,3),dtype=np.float32)
 
 # collect the keyword arguments to the network
-kargs = {"dropout": 0.25, "activation": "softmax"}
+kargs = {"dropout": False, "activation": "softmax"}
 
 # train the model using SGD
 print("[INFO] compiling model...")
-model = ConvolutionNet.build("net", 3, 32, 32, 10, **kargs)
-sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
+#model = ConvolutionNet.build("net", 3, 800, 600, num_classes, **kargs)
+model = shallow_net()
+#sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
+#model.compile(loss="categorical_crossentropy", optimizer=sgd, metrics=["accuracy"])
 
 filepath ="weights.best.hdf5"
 
@@ -73,11 +78,12 @@ callbacks_list = [checkpoint]
 # start the training process
 print("[INFO] starting training...")
 history = model.fit(trainData,trainLabel, validation_data=(testData,testLabel),callbacks=callbacks_list,
-         nb_epoch=40, batch_size=32, verbose=2)
+         epochs=2, batch_size=32, verbose=2)
 
 
 # show the accuracy on the testing set
-(loss, accuracy) = model.evaluate(testData, testLabels, verbose=0)
+print('[INFO]: Evaluating on validation set..')
+(loss, accuracy) = model.evaluate(testData, testLabel, verbose=0)
 print("[INFO] accuracy: {:.2f}%".format(accuracy * 100))
 
 # dump the network architecture and weights to file
@@ -88,21 +94,7 @@ model.save_weights("CNN_PlantClassify.h5")
 ## Plotting and evaluating model history -
 print(history.history.keys())
 
-# Checking the model accuracy
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-plt.title('Model Accuracy')
-plt.legend(['training','validation'], loc='upper right')
-plt.xlabel('Epoch')
-plt.ylabel('Accuracy')
-plt.savefig('model-accuracy.png')
-
-
-# Checking the model loss
-plt.plot(history.history['loss'])
-plt.plot(history.history['val_loss'])
-plt.title('Model Loss')
-plt.legend(['training','validation'], loc='lower right')
-plt.xlabel('Epoch')
-plt.ylabel('model loss')
-plt.savefig('model_loss.png') 
+# Plotting model summary
+print('[INFO]: Plotting the model summary..')
+hlp.summarize_diagnostics(history)
+print('[INFO]: Finished the training..')
