@@ -1,4 +1,4 @@
-#!usr/bin/python
+#!/usr/bin/python
 # import the necessary packages
 import cv2
 import numpy as np
