@@ -1,4 +1,4 @@
-#!usr/bin/python
+#!/usr/bin/python
 #creating training and test data
 import glob
 import os
@@ -54,4 +54,4 @@ def load_data(path):
 
 if __name__ == '__main__':
     load_data(path)
-
+    
